@@ -11,23 +11,20 @@ jobs:
     - name: Repository klonen
       uses: actions/checkout@v4
 
-      - name: Abhängigkeiten installieren
-        run: |
-          sudo dpkg --add-architecture i386
-          sudo apt-get update
-          sudo apt-get install -y git gnupg flex bison gperf build-essential \
-            zip curl zlib1g-dev libc6-dev lib32ncurses-dev \
-            x11proto-core-dev libx11-dev libreadline-dev libgl1-mesa-dev \
-            tofrodos python3-markdown libxml2-utils xsltproc
-
-
-    - name: Java 6 / OpenJDK einrichten
+    - name: Abhängigkeiten installieren
       run: |
-        # Android 2.3 benötigt zwingend Java 6 zum Bauen
-        sudo apt-get install -y openjdk-6-jdk || true
-        export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64
-        export PATH=$JAVA_HOME/bin:$PATH
-        java -version || true
+        sudo dpkg --add-architecture i386
+        sudo apt-get update
+        sudo apt-get install -y git gnupg flex bison gperf build-essential \
+          zip curl zlib1g-dev libc6-dev lib32ncurses-dev \
+          x11proto-core-dev libx11-dev libreadline-dev libgl1-mesa-dev \
+          tofrodos python3-markdown libxml2-utils xsltproc python-is-python3
+
+    - name: Java 6 einrichten
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '6'
 
     - name: Repo-Tool installieren und Quellcode clonen
       run: |
@@ -46,7 +43,6 @@ jobs:
         git config --global user.name "GitHub Action Runner"
 
         # 4. Manifest initialisieren und synchronisieren
-        # Passe ggf. die Repository-URL an dein Ziel-Projekt an!
         repo init -u https://github.com/android-rpi/platform_manifest.git -b gingerbread
         repo sync -j$(nproc)
 
