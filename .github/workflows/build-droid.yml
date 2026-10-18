@@ -11,13 +11,15 @@ jobs:
     - name: Repository klonen
       uses: actions/checkout@v4
 
-    - name: Alte Build-Abhängigkeiten installieren
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y git gnupg flex bison gperf build-essential \
-          zip curl zlib1g-dev libc6-dev lib32ncurses5-dev \
-          x11proto-core-dev libx11-dev libreadline-dev libgl1-mesa-dev \
-          tofrodos python-markdown libxml2-utils xsltproc
+      - name: Abhängigkeiten installieren
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y git gnupg flex bison gperf build-essential \
+            zip curl zlib1g-dev libc6-dev lib32ncurses-dev \
+            x11proto-core-dev libx11-dev libreadline-dev libgl1-mesa-dev \
+            tofrodos python3-markdown libxml2-utils xsltproc
+
 
     - name: Java 6 / OpenJDK einrichten
       run: |
