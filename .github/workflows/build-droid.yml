@@ -42,8 +42,8 @@ jobs:
         git config --global user.email "runner@github.com"
         git config --global user.name "GitHub Action Runner"
 
-        # 4. Manifest initialisieren und synchronisieren
-        repo init -u https://github.com/android-rpi/platform_manifest.git -b gingerbread
+        # 4. Offizielles AOSP-Manifest für Gingerbread initialisieren und synchronisieren
+        repo init -u https://android.googlesource.com/platform/manifest -b android-2.3.7_r1
         repo sync -j$(nproc)
 
     - name: Build starten
